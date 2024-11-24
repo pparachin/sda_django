@@ -20,9 +20,10 @@ from django.urls import path
 from viewer.views import (hello, stranka, index, MovieCreateView,
                           MoviesView, CustomLoginView, ProfileView, RegisterView, MovieUpdateView,
                           ActorsView, ActorCreateView, GenreView, GenreCreateView, GenreUpdateView, WatchlistView,
-                          WatchlistAddView, ReviewCreateView, MovieDetailView)
+                          WatchlistAddView, ReviewCreateView, watchlist_add, MovieDetailView)
 from viewer.models import Genre, Movie
 from django.contrib.auth import views
+
 
 admin.site.register(Genre)
 admin.site.register(Movie)
@@ -55,6 +56,7 @@ urlpatterns = [
 
     path('watchlist', WatchlistView.as_view(), name='watchlist'),
     path('watchlist/add', WatchlistAddView.as_view(), name='watchlist_add'),
+    path('watchlist/add/button', watchlist_add, name='watchlist_add_button'),
 ]
 
 if settings.DEBUG:  # new

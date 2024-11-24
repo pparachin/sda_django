@@ -25,7 +25,13 @@ class ActorForm(ModelForm):
 class MovieForm(ModelForm):
     class Meta:
         model = Movie
-        fields = "__all__"
+        fields = ['title', 'description', 'genre', 'released', 'image']
+
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control'}),
+            'description': TextInput(attrs={'class': 'form-control'}),
+            'released': DateInput(attrs={'class': 'form-control', 'type': 'date'})
+        }
 
     def clean_description(self):
         # Každá věta bude začínat velkým písmenem

@@ -21,7 +21,7 @@ class Actor(Model):
 class Movie(Model):
     title = CharField(max_length=128)
     genre = ForeignKey(Genre, on_delete=DO_NOTHING, default=None)
-    rating = IntegerField(default=None)
+    rating = IntegerField(default=None, null=True)
     released = DateField(default=None)
     description = TextField(default=None)
     image = ImageField(upload_to='images/', default=None, null=True)

@@ -11,7 +11,9 @@
         {% if movie.image %}}
             <img class="" src="{{ movie.image.url }}" alt="Card image cap" style="border: 2px solid black">
         {% endif %}
-        <p class="card-text">{{ movie.description }}</p>
+        <p class="card-text text-left">{{ movie.description }}</p>
+        <!-- Button for add movie to watchlist -->
+        <a href="{% url 'watchlist_add_button' %}?movie={{ movie.id }}" class="btn btn-primary">Přidat do watchlistu</a>
     </div>
 </div>
 <div class="card-footer text-muted">
@@ -23,6 +25,7 @@
         </div>
         <div class="card-body">
             <p class="card-text">{{ review.text }}</p>
+            Hodnocení: <p class="card-text">{{ review.rating }}</p>
         </div>
         {% endfor %}
     </div>

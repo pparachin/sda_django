@@ -71,15 +71,21 @@ class MovieCreateView(FormView):
     form_class = MovieForm
     success_url = reverse_lazy('movies')
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('/login')
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
         Movie.objects.create(
             title=cleaned_data['title'],
             genre=cleaned_data['genre'],
-            rating=cleaned_data['rating'],
+            rating=None,
             released=cleaned_data['released'],
-            description=cleaned_data['description']
+            description=cleaned_data['description'],
+            image=cleaned_data['image']
         )
         return result
 
@@ -114,12 +120,24 @@ class GenreUpdateView(UpdateView):
     model = Genre
     success_url = reverse_lazy('genres_view')
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('/login')
+        return super().dispatch(request, *args, **kwargs)
+
+
 
 class MovieUpdateView(UpdateView):
     template_name = 'form.html'
     form_class = MovieForm
     model = Movie
     success_url = reverse_lazy('movies')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('/login')
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class MovieDetailView(TemplateView):
@@ -173,6 +191,24 @@ class WatchlistView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
 
+def check_if_movie_is_in_watchlist(user, movie):
+    return Watchlist.objects.filter(user=user, movie=movie).exists()
+
+
+def watchlist_add(request):
+    movie_id = request.GET.get('movie')
+    check_if_movie_is_in_watchlist(request.user, Movie.objects.get(pk=movie_id))
+    if check_if_movie_is_in_watchlist(request.user, Movie.objects.get(pk=movie_id)):
+        return redirect('watchlist')
+    else:
+        Watchlist.objects.create(
+            user=request.user,
+            movie=Movie.objects.get(pk=movie_id)
+        )
+
+    return redirect('watchlist')
+
+
 class WatchlistAddView(FormView):
     template_name = 'watchlist/add_movie_to_watchlist.html'
     form_class = WatchlistForm
@@ -181,11 +217,29 @@ class WatchlistAddView(FormView):
     def form_valid(self, form):
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
+        if Watchlist.objects.filter(user=self.request.user, movie=cleaned_data['movie']).exists():
+            return redirect('watchlist')
         Watchlist.objects.create(
             user=self.request.user,
             movie=cleaned_data['movie']
         )
         return result
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+
+        movie = request.GET.get('movie')
+        if movie:
+            movie = Movie.objects.get(pk=movie)
+            if Watchlist.objects.filter(user=request.user, movie=movie).exists():
+                return redirect('watchlist')
+            Watchlist.objects.create(
+                user=self.request.user,
+                movie=movie
+            )
+            return redirect('watchlist')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ReviewCreateView(FormView):
@@ -200,6 +254,12 @@ class ReviewCreateView(FormView):
         context['movie'] = Movie.objects.get(pk=movie_id)
         #context['informace'] = Genre.objects.get(pk=1)
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('/login')
+        return super().dispatch(request, *args, **kwargs)
+
 
     def form_valid(self, form):
         result = super().form_valid(form)

@@ -1,7 +1,7 @@
-Vytvořit model pro Actor(jmeno, prijmeni, datum_narozeni)
-    - makemigration
-    - migrate
-Novou šablonu pro zobrazení herců
-Vytvořit view pro přidávání, zobrazení, editování
-Vytvořit formuláře pro přidávání a editování
-Definovat v urls.py cesty pro přidávání, zobrazení, editování
+Rating se nyní u filmů zadává při vytvoření. To budeme chtít změnit, následujícím způsobem:
+    - Při zakládání filmu, odebereme input pro nastavení ratingu a rating nastávíme na None
+    - Jinak se rating bude počítát na zákládě ratingu z recenzí:
+        - Ve chvílí kdy se přidá recenze, podívám jestli už nějaká další existuje:
+            - Pokud ANO: Zjistím kolik a spočítám průměr => ten uložím do sloupce rating v tabulce movies
+            - Pokud NE: Tak nastavím rating z recenze jako aktuální rating
+            BONUS: K ratingu ještě zobrazovat procenta
