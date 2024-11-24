@@ -1,0 +1,7 @@
+Vytvořit dvě nové šablony ve složce templates (login.html a register.html)
+Přidat do urls, zárověn vytvořit funkce pro vykreslení těchto šablon
+Přidat odkazy do menu na tyto dvě stránky
+
+Samostná práce
+
+Vylepšení designu (zobrazení filmů a žánrů v tabulkách + upravení formulářů (nutno reimplentovat django forms template) )

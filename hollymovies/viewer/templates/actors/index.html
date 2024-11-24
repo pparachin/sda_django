@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="text-center h2">Herci v databázi</h2>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Jméno a přijmení herce</th>
+        <th>Datum narození</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for actor in object_list %}
+    <tr>
+        <td>
+            {{ actor.name }} {{ actor.surname }}
+        </td>
+        <td>{{ actor.birth_date }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if not object_list %}
+<p>Ještě není přidaný žádný herec v databázi</p>
+{% endif %}
+{% if user.is_authenticated %}
+    <a href="{% url 'actors_add' %}" class="btn btn-primary">Přidat herce</a>
+{% endif %}
+{% endblock %}

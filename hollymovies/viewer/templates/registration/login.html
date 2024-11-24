@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4 text-center">Přihlašení</h2>
+{% if user.is_authenticated %}
+Jste již přihlašený.
+{% else %}
+<form method="post" class="w-50 mx-auto">
+    {% csrf_token %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-danger">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <div class="mb-3">
+        <label class="form-label" for="username">Uživatelské jméno</label>
+        <input type="text" name="username" id="username" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="password">Heslo</label>
+        <input type="password" name="password" id="password" class="form-control" required>
+        {% if field.errors %}
+        <div class="text-danger">
+            {{ field.errors }}
+        </div>
+        {% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Přihlásit se</button>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Žánry v databázi</h2>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Název žánru</th>
+        <th>Upravit</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for genre in object_list %}
+    <tr>
+        <td>
+            {{ genre.name }}
+        </td>
+        <td><a href="{% url 'genres_update' genre.id %}" class="btn btn-info">Edit</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if not object_list %}
+<p>No genres in database</p>
+{% endif %}
+<a href="{% url 'genres_add' %}" class="btn btn-primary">Add genre</a>
+
+
+{% endblock %}

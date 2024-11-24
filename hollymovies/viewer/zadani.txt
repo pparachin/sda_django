@@ -1,0 +1,7 @@
+Vytvořit model pro Actor(jmeno, prijmeni, datum_narozeni)
+    - makemigration
+    - migrate
+Novou šablonu pro zobrazení herců
+Vytvořit view pro přidávání, zobrazení, editování
+Vytvořit formuláře pro přidávání a editování
+Definovat v urls.py cesty pro přidávání, zobrazení, editování

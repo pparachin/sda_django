@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h2>Watchlist</h2>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Název filmu</th>
+        <th>Žánr</th>
+        <th>Popis</th>
+        <th>Rating</th>
+        <th>Rok vydání</th>
+        <th>Smazat</th>
+    </tr>
+    </thead>
+    {% for item in object_list %}
+    <tbody>
+        <td>{{ item.movie.title }}</td>
+        <td>{{ item.movie.genre }}</td>
+        <td>{{ item.movie.description }}</td>
+        <td>{{ item.movie.rating }}</td>
+        <td>{{ item.movie.released }}</td>
+        <td><a href="#">Smazat</a></td>
+    </tbody>
+    {% endfor %}
+</table>
+<a href="{% url 'watchlist_add' %}" class="btn btn-primary">Přidat film</a>
+{% endblock %}

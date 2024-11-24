@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block nadpis %}
+    Filmy
+{% endblock %}
+
+{% block content %}
+<h2>Filmy v databázi</h2>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Název filmu</th>
+        <th>Rok vydání</th>
+        <th>Žánr</th>
+        <th>Hodnocení</th>
+        <th>Plakát</th>
+        <th>Přidat recenzi</th>
+        <th>Editovat</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for movie in object_list %}
+    <tr>
+        <td>
+            <a href="{% url 'movie_detail' %}?movie={{ movie.id }}">{{ movie.title }}</a>
+        </td>
+        <td>{{ movie.released.year }}</td>
+        <td>{{ movie.genre.name }}</td>
+        <td>{{ movie.rating }}</td>
+        <td><img src="media/{{ movie.image }}" class="img-responsive" width="150" alt="Poster"></td>
+        <td><a href="{% url 'review_add' %}?movie={{ movie.id }}" class="btn btn-block btn-warning">Přidat recenzi</a></td>
+        <td><a href="{%url 'movie_update' movie.id %}" class="btn btn-block btn-info">Edit</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if not object_list %}
+<p>No movies in database</p>
+{% endif %}
+<a href="{% url 'movie_add' %}" class="btn btn-primary">Add movie</a>
+{% endblock %}
